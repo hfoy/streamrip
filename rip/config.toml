@@ -20,9 +20,12 @@ quality = 3
 # This will download booklet pdfs that are included with some albums
 download_booklets = true
 
-email = ""
-# This is an md5 hash of the plaintext password
-password = ""
+# Set to true to log in with user_id and auth token instead of email and password
+use_auth_token = false
+# If use_auth_token = false, this is your email. If true, this is your user ID.
+email_or_userid = ""
+# If use_auth_token = false, this is an md5 hash of your password. If true, this is your auth token.
+password_or_token = ""
 # Do not change
 app_id = ""
 # Do not change

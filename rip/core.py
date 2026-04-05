@@ -878,15 +878,22 @@ class RipCore(list):
         :type source: str
         """
         if source == "qobuz":
-            secho("Enter Qobuz email:", fg="green")
-            self.config.file[source]["email"] = input()
-            secho(
-                "Enter Qobuz password (will not show on screen):",
-                fg="green",
-            )
-            self.config.file[source]["password"] = md5(
-                getpass(prompt="").encode("utf-8")
-            ).hexdigest()
+            use_auth_token = self.config.file[source].get("use_auth_token", False)
+            if use_auth_token:
+                secho("Enter Qobuz user ID:", fg="green")
+                self.config.file[source]["email_or_userid"] = input()
+                secho("Enter Qobuz auth token:", fg="green")
+                self.config.file[source]["password_or_token"] = input()
+            else:
+                secho("Enter Qobuz email:", fg="green")
+                self.config.file[source]["email_or_userid"] = input()
+                secho(
+                    "Enter Qobuz password (will not show on screen):",
+                    fg="green",
+                )
+                self.config.file[source]["password_or_token"] = md5(
+                    getpass(prompt="").encode("utf-8")
+                ).hexdigest()
 
             self.config.save()
             secho(

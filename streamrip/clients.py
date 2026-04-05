@@ -110,16 +110,19 @@ class QobuzClient(Client):
         Spoofer script, which retrieves them. This will take some time,
         so it is recommended to cache them somewhere for reuse.
 
-        :param email: email for the qobuz account
-        :type email: str
-        :param pwd: password for the qobuz account
-        :type pwd: str
+        :param email_or_userid: email or user ID for the qobuz account
+        :type email_or_userid: str
+        :param password_or_token: password hash or auth token for the qobuz account
+        :type password_or_token: str
+        :param use_auth_token: if True, use user_id + auth token login
+        :type use_auth_token: bool
         :param kwargs: app_id: str, secrets: list, return_secrets: bool
         """
         secho(f"Logging into {self.source}", fg="green")
-        email: str = kwargs["email"]
-        pwd: str = kwargs["pwd"]
-        if not email or not pwd:
+        email_or_userid: str = kwargs.get("email_or_userid") or kwargs.get("email", "")
+        password_or_token: str = kwargs.get("password_or_token") or kwargs.get("pwd", "")
+        use_auth_token: bool = kwargs.get("use_auth_token", False)
+        if not email_or_userid or not password_or_token:
             raise MissingCredentials
 
         if self.logged_in:
@@ -138,7 +141,7 @@ class QobuzClient(Client):
             )
             self._validate_secrets()
 
-        self._api_login(email, pwd)
+        self._api_login(email_or_userid, password_or_token, use_auth_token)
         logger.debug("Logged into Qobuz")
         logger.debug("Qobuz client is ready to use")
 
@@ -342,19 +345,28 @@ class QobuzClient(Client):
 
         return self._gen_pages(epoint, params)
 
-    def _api_login(self, email: str, pwd: str):
+    def _api_login(self, email_or_userid: str, password_or_token: str, use_auth_token: bool = False):
         """Log into the api to get the user authentication token.
 
-        :param email:
-        :type email: str
-        :param pwd:
-        :type pwd: str
+        :param email_or_userid: email or user ID
+        :type email_or_userid: str
+        :param password_or_token: password hash or auth token
+        :type password_or_token: str
+        :param use_auth_token: if True, use user_id + auth token login
+        :type use_auth_token: bool
         """
-        params = {
-            "email": email,
-            "password": pwd,
-            "app_id": self.app_id,
-        }
+        if use_auth_token:
+            params = {
+                "user_id": email_or_userid,
+                "user_auth_token": password_or_token,
+                "app_id": self.app_id,
+            }
+        else:
+            params = {
+                "email": email_or_userid,
+                "password": password_or_token,
+                "app_id": self.app_id,
+            }
         epoint = "user/login"
         resp, status_code = self._api_request(epoint, params)
 
