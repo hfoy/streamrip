@@ -80,8 +80,8 @@ class DownloadCommand(Command):
         global newest_version
 
         # Use a thread so that it doesn't slow down startup
-        update_check = threading.Thread(target=is_outdated, daemon=True)
-        update_check.start()
+        #update_check = threading.Thread(target=is_outdated, daemon=True)
+        #update_check.start()
 
         path, quality, no_db, directory, config = clean_options(
             self.option("file"),
@@ -126,32 +126,32 @@ class DownloadCommand(Command):
         elif not urls and path is None:
             self.line("<error>Must pass arguments. See </><cmd>rip url -h</cmd>.")
 
-        update_check.join()
+        #update_check.join()
 
-        if outdated:
-            import re
+        # if outdated:
+        #     import re
 
-            self.line(
-                f"\n<info>A new version of streamrip <title>v{newest_version}</title>"
-                " is available! Run <cmd>pip3 install streamrip --upgrade</cmd>"
-                " to update.</info>\n"
-            )
+        #     self.line(
+        #         f"\n<info>A new version of streamrip <title>v{newest_version}</title>"
+        #         " is available! Run <cmd>pip3 install streamrip --upgrade</cmd>"
+        #         " to update.</info>\n"
+        #     )
 
-            md_header = re.compile(r"#\s+(.+)")
-            bullet_point = re.compile(r"-\s+(.+)")
-            code = re.compile(r"`([^`]+)`")
-            issue_reference = re.compile(r"(#\d+)")
+        #     md_header = re.compile(r"#\s+(.+)")
+        #     bullet_point = re.compile(r"-\s+(.+)")
+        #     code = re.compile(r"`([^`]+)`")
+        #     issue_reference = re.compile(r"(#\d+)")
 
-            release_notes = requests.get(
-                "https://api.github.com/repos/nathom/streamrip/releases/latest"
-            ).json()["body"]
+        #     release_notes = requests.get(
+        #         "https://api.github.com/repos/nathom/streamrip/releases/latest"
+        #     ).json()["body"]
 
-            release_notes = md_header.sub(r"<header>\1</header>", release_notes)
-            release_notes = bullet_point.sub(r"<options=bold>•</> \1", release_notes)
-            release_notes = code.sub(r"<cmd>\1</cmd>", release_notes)
-            release_notes = issue_reference.sub(r"<options=bold>\1</>", release_notes)
+        #     release_notes = md_header.sub(r"<header>\1</header>", release_notes)
+        #     release_notes = bullet_point.sub(r"<options=bold>•</> \1", release_notes)
+        #     release_notes = code.sub(r"<cmd>\1</cmd>", release_notes)
+        #     release_notes = issue_reference.sub(r"<options=bold>\1</>", release_notes)
 
-            self.line(release_notes)
+        #     self.line(release_notes)
 
         return 0
 
