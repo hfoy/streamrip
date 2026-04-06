@@ -3,7 +3,7 @@
 [![Downloads](https://pepy.tech/badge/streamrip)](https://pepy.tech/project/streamrip)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
 
-A scriptable stream downloader for Qobuz, Tidal, Deezer and SoundCloud.
+A scriptable stream downloader for Qobuz.
 
 ![Streamrip downloading an album](https://github.com/nathom/streamrip/blob/dev/demo/download_album.png?raw=true)
 
@@ -11,12 +11,10 @@ A scriptable stream downloader for Qobuz, Tidal, Deezer and SoundCloud.
 ## Features
 
 - Super fast, as it utilizes concurrent downloads and conversion
-- Downloads tracks, albums, playlists, discographies, and labels from Qobuz, Tidal, Deezer, and SoundCloud
-- Supports downloads of Spotify and Apple Music playlists through [last.fm](https://www.last.fm)
+- Downloads tracks, albums, playlists, discographies, and labels from Qobuz
 - Automatically converts files to a preferred format
 - Has a database that stores the downloaded tracks' IDs so that repeats are avoided
 - Easy to customize with the config file
-- Integration with `youtube-dl`
 
 ## Installation
 
@@ -34,7 +32,7 @@ rip
 
 it should show the main help page. If you have no idea what these mean, or are having other issues installing, check out the [detailed installation instructions](https://github.com/nathom/streamrip/wiki#detailed-installation-instructions).
 
-If you would like to use `streamrip`'s conversion capabilities, download TIDAL videos, or download music from SoundCloud, install [ffmpeg](https://ffmpeg.org/download.html). To download music from YouTube, install [youtube-dl](https://github.com/ytdl-org/youtube-dl#installation).
+If you would like to use `streamrip`'s conversion capabilities, install [ffmpeg](https://ffmpeg.org/download.html).
 
 ### Streamrip beta
 
@@ -47,7 +45,7 @@ pip3 install git+https://github.com/nathom/streamrip.git@dev
 
 ## Example Usage
 
-**For Tidal and Qobuz, you NEED a premium subscription.**
+**You NEED a premium Qobuz subscription.**
 
 Download an album from Qobuz
 
@@ -73,29 +71,20 @@ rip url --codec mp3 https://open.qobuz.com/album/0060253780968
 
 To set the maximum quality, use the `--max-quality` option to `0, 1, 2, 3, 4`:
 
-| Quality ID | Audio Quality         | Available Sources                            |
-| ---------- | --------------------- | -------------------------------------------- |
-| 0          | 128 kbps MP3 or AAC   | Deezer, Tidal, SoundCloud (most of the time) |
-| 1          | 320 kbps MP3 or AAC   | Deezer, Tidal, Qobuz, SoundCloud (rarely)    |
-| 2          | 16 bit, 44.1 kHz (CD) | Deezer, Tidal, Qobuz, SoundCloud (rarely)    |
-| 3          | 24 bit, ≤ 96 kHz      | Tidal (MQA), Qobuz, SoundCloud (rarely)      |
-| 4          | 24 bit, ≤ 192 kHz     | Qobuz                                        |
+| Quality ID | Audio Quality         |
+| ---------- | --------------------- |
+| 1          | 320 kbps MP3          |
+| 2          | 16 bit, 44.1 kHz (CD) |
+| 3          | 24 bit, ≤ 96 kHz      |
+| 4          | 24 bit, ≤ 192 kHz     |
 
 
 
 ```bash
-rip url --max-quality 3 https://tidal.com/browse/album/147569387
+rip url --max-quality 3 https://open.qobuz.com/album/0060253780968
 ```
 
-Search for albums matching `lil uzi vert` on SoundCloud
-
-```bash
-rip search --source soundcloud 'lil uzi vert'
-```
-
-![streamrip interactive search](https://github.com/nathom/streamrip/blob/dev/demo/album_search.png?raw=true)
-
-Search for *Rumours* on Tidal, and download it
+Search for albums matching `fleetwood mac`
 
 ```bash
 rip search 'fleetwood mac rumours'
@@ -105,12 +94,6 @@ Want to find some new music? Use the `discover` command (only on Qobuz)
 
 ```bash
 rip discover --list 'best-sellers'
-```
-
-Download a last.fm playlist using the lastfm command
-
-```
-rip lastfm https://www.last.fm/user/nathan3895/playlists/12126195
 ```
 
 For extreme customization, see the config file
@@ -169,15 +152,13 @@ Thanks to Vitiko98, Sorrow446, and DashLt for their contributions to this projec
 
 - [qobuz-dl](https://github.com/vitiko98/qobuz-dl)
 - [Qo-DL Reborn](https://github.com/badumbass/Qo-DL-Reborn)
-- [Tidal-Media-Downloader](https://github.com/yaronzz/Tidal-Media-Downloader)
-- [scdl](https://github.com/flyingrub/scdl)
 
 
 
 ## Disclaimer
 
 
-I will not be responsible for how you use `streamrip`. By using `streamrip`, you agree to the terms and conditions of the Qobuz, Tidal, and Deezer APIs.
+I will not be responsible for how you use `streamrip`. By using `streamrip`, you agree to the terms and conditions of the Qobuz API.
 
 ## Donations/Sponsorship
 
