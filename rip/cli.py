@@ -68,7 +68,7 @@ class DownloadCommand(Command):
 
     help = (
         "\nDownload <title>Dreams</title> by <title>Fleetwood Mac</title>:\n"
-        "$ <cmd>rip url https://open.qobuz.com/track/...</cmd>\n\n"
+        "$ <cmd>rip url https://open.qobuz.com/track/19512574</cmd>\n\n"
         "Batch download urls from a text file named <path>urls.txt</path>:\n"
         "$ <cmd>rip url --file urls.txt</cmd>\n\n"
         "For more information on Quality IDs, see\n"
@@ -76,13 +76,6 @@ class DownloadCommand(Command):
     )
 
     def handle(self):
-        global outdated
-        global newest_version
-
-        # Use a thread so that it doesn't slow down startup
-        #update_check = threading.Thread(target=is_outdated, daemon=True)
-        #update_check.start()
-
         path, quality, no_db, directory, config = clean_options(
             self.option("file"),
             self.option("max-quality"),
@@ -124,33 +117,6 @@ class DownloadCommand(Command):
             core.download()
         elif not urls and path is None:
             self.line("<error>Must pass arguments. See </><cmd>rip url -h</cmd>.")
-
-        #update_check.join()
-
-        # if outdated:
-        #     import re
-
-        #     self.line(
-        #         f"\n<info>A new version of streamrip <title>v{newest_version}</title>"
-        #         " is available! Run <cmd>pip3 install streamrip --upgrade</cmd>"
-        #         " to update.</info>\n"
-        #     )
-
-        #     md_header = re.compile(r"#\s+(.+)")
-        #     bullet_point = re.compile(r"-\s+(.+)")
-        #     code = re.compile(r"`([^`]+)`")
-        #     issue_reference = re.compile(r"(#\d+)")
-
-        #     release_notes = requests.get(
-        #         "https://api.github.com/repos/nathom/streamrip/releases/latest"
-        #     ).json()["body"]
-
-        #     release_notes = md_header.sub(r"<header>\1</header>", release_notes)
-        #     release_notes = bullet_point.sub(r"<options=bold>•</> \1", release_notes)
-        #     release_notes = code.sub(r"<cmd>\1</cmd>", release_notes)
-        #     release_notes = issue_reference.sub(r"<options=bold>\1</>", release_notes)
-
-        #     self.line(release_notes)
 
         return 0
 
@@ -687,8 +653,7 @@ class Application(BaseApplication):
     def render_error(self, error, io):
         super().render_error(error, io)
         io.write_line(
-            "\n<error>If this was unexpected, please open a <path>Bug Report</path> at </error>"
-            "<url>https://github.com/nathom/streamrip/issues/new/choose</url>"
+            "\n<error>If this was unexpected, please open a <path>Bug Report</path></error>"
         )
 
 
@@ -705,23 +670,6 @@ def clean_options(*opts):
                 opt = STRING_TO_PRIMITIVE.get(opt, opt)
 
         yield opt
-
-
-def is_outdated():
-    global outdated
-    global newest_version
-    r = requests.get("https://pypi.org/pypi/streamrip/json").json()
-    newest_version = r["info"]["version"]
-
-    # Compare versions
-    curr_version_parsed = map(int, __version__.split("."))
-    assert isinstance(newest_version, str)
-    newest_version_parsed = map(int, newest_version.split("."))
-    outdated = False
-    for c, n in zip(curr_version_parsed, newest_version_parsed):
-        outdated = c < n
-        if c != n:
-            break
 
 
 def main():
