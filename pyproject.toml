@@ -2,11 +2,11 @@
 name = "streamrip"
 version = "1.9.7"
 description = "A fast music ripper for Qobuz"
-authors = [""]
+authors = [" "]
 license = "GPL-3.0-only"
 readme = "README.md"
-homepage = ""
-repository = ""
+homepage = "https://github.com/leomoty/streamrip"
+repository = "https://github.com/leomoty/streamrip"
 include = ["streamrip/config.toml"]
 packages = [
     { include = "streamrip" },
